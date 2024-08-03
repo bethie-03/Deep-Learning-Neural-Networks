@@ -35,12 +35,12 @@ def data_loader(data_dir, batch_size, random_seed = 42, shuffle = True, valid_si
         transform = transform
     )
 
-    valid_dataset = datasets.CIFAR10(
+    '''valid_dataset = datasets.CIFAR10(
         root = data_dir,
         train = True,
         download = True,
         transform = transform
-    )
+    )'''
 
     num_train = len(train_dataset)
     indices = list(range(num_train))
@@ -60,7 +60,7 @@ def data_loader(data_dir, batch_size, random_seed = 42, shuffle = True, valid_si
     )
 
     valid_loader = DataLoader(
-       valid_dataset, batch_size=batch_size, sampler=valid_sampler
+       train_dataset, batch_size=batch_size, sampler=valid_sampler
     )
 
     return (train_loader, valid_loader)
