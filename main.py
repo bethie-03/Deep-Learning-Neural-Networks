@@ -9,7 +9,7 @@ def main():
     parser.add_argument('--num_classes', type=int, default=100)
     parser.add_argument('--num_epochs', type=int, default=20)
     parser.add_argument('--batch_size', type=int, default=64)
-    parser.add_argument('--learning_rate', type=float, default=0.001)
+    parser.add_argument('--learning_rate', type=float, default=0.01)
     parser.add_argument('--data_directory', type=str, default="dataset/")
     args = parser.parse_args()
 
