@@ -20,7 +20,7 @@ def evaluate(test_loader, classifier, criterion, device):
             total_loss += loss.item()  
 
         accuracy = (correct / total) * 100
-        average_loss = total_loss / total  
+        average_loss = total_loss / len(test_loader)  
 
         print(f'Accuracy of the model on test data: {accuracy:.2f}%')
         print(f'Average loss of the model on test data: {average_loss:.4f}')
