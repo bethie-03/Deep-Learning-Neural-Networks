@@ -1,8 +1,7 @@
 import argparse
-from utils.vgg16 import *
-from utils.train import *
-from utils.eval import *
-from utils.data_loader import *
+import torch
+import torch.nn as nn
+from utils import VGG16, data_loader, train, evaluate
 
 def main():
     parser = argparse.ArgumentParser(description='VGG16')
@@ -21,7 +20,7 @@ def main():
     test_loader = data_loader(data_dir="dataset/", batch_size=args.batch_size, test=True)
 
     train(args.num_epochs, train_loader, valid_loader, vgg16_classifier, criterion, optimizer, device)
-    eval(test_loader, vgg16_classifier, device)
+    evaluate(test_loader, vgg16_classifier, criterion, device)
 
 if __name__ == '__main__':
     main()
