@@ -1,7 +1,31 @@
 import torch
 import json
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
+def visualize_logs():
+    with open('history/training_logs.json', 'r') as f:
+        logs = json.load(f)
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(logs['train_loss'], label='Train Loss')
+    plt.plot(logs['val_loss'], label='Validation Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title('Train and Validation Loss')
+    plt.legend()
+    plt.savefig('history/loss.png')
+    plt.close()
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(logs['train_accuracy'], label='Train Accuracy')
+    plt.plot(logs['val_accuracy'], label='Validation Accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.title('Train and Validation Accuracy')
+    plt.legend()
+    plt.savefig('history/accuracy.png')
+    plt.close()
+    
 def train(num_epochs, train_loader, valid_loader, classifier, criterion, optimizer, device):
     best_val_loss = float('inf')
 
@@ -73,28 +97,9 @@ def train(num_epochs, train_loader, valid_loader, classifier, criterion, optimiz
     torch.save(classifier.state_dict(), 'weights/last.pt')
 
     with open('history/training_logs.json', 'w') as f:
-        json.dump(history_logs, f)
+        json.dump(history_logs, f, indent=4)
 
     visualize_logs()
 
-def visualize_logs():
-    with open('history/training_logs.json', 'r') as f:
-        logs = json.load(f)
-
-    plt.figure(figsize=(10, 5))
-    plt.plot(logs['train_loss'], label='Train Loss')
-    plt.plot(logs['val_loss'], label='Validation Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.title('Train and Validation Loss')
-    plt.legend()
-    plt.savefig('history/loss.png')
-
-    plt.figure(figsize=(10, 5))
-    plt.plot(logs['train_accuracy'], label='Train Accuracy')
-    plt.plot(logs['val_accuracy'], label='Validation Accuracy')
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
-    plt.title('Train and Validation Accuracy')
-    plt.legend()
-    plt.savefig('history/accuracy.png')
+if __name__ == '__main__':
+    visualize_logs()
