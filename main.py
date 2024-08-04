@@ -1,6 +1,7 @@
 import argparse
 import torch
 import torch.nn as nn
+from torchmetrics import Recall, Precision, Accuracy
 from utils import VGG, data_loader, train, evaluate, make_layers, cfgs_vgg
 
 def main():
@@ -16,13 +17,19 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     vgg_classifier = VGG(make_layers(cfgs_vgg[args.VGG_version]), args.num_classes).to(device)
 
+    accuracy = Accuracy(task='multiclass', num_classes=args.num_classes).to(device)
+    precision = Precision(task='multiclass', num_classes=args.num_classes, average='macro').to(device)
+    recall = Recall(task='multiclass', num_classes=args.num_classes, average='macro').to(device)
+
+    metrics = {'Accuracy': accuracy, 'Precision': precision, 'Recall': recall}
+
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(vgg_classifier.parameters(), lr= args.learning_rate)
     train_loader, valid_loader = data_loader(data_dir="dataset/", batch_size=args.batch_size)
     test_loader = data_loader(data_dir="dataset/", batch_size=args.batch_size, test=True)
 
-    train(args.num_epochs, train_loader, valid_loader, vgg_classifier, criterion, optimizer, device)
-    evaluate(test_loader, vgg_classifier, criterion, device)
+    train(args.num_epochs, train_loader, valid_loader, vgg_classifier, metrics, criterion, optimizer, device)
+    evaluate(test_loader, vgg_classifier, metrics, criterion, device)
 
 if __name__ == '__main__':
     main()
