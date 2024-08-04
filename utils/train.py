@@ -100,6 +100,3 @@ def train(num_epochs, train_loader, valid_loader, classifier, criterion, optimiz
         json.dump(history_logs, f, indent=4)
 
     visualize_logs()
-
-if __name__ == '__main__':
-    visualize_logs()
