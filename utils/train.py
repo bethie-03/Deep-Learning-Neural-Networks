@@ -90,9 +90,9 @@ def train(num_epochs, train_loader, valid_loader, classifier, metrics, criterion
                 del images, labels, outputs
 
             average_val_loss = total_val_loss / len(valid_loader)
-            history_val_logs['Loss'].append(average_train_loss)
+            history_val_logs['Loss'].append(average_val_loss)
             
-            result += f'Val Loss: {average_val_loss:.4f}'
+            result += f', Val Loss: {average_val_loss:.4f}'
             for metric_name, metric in zip(metrics.keys(), metrics.values()):
                 metric_value = metric.compute().item()
                 result += f', Val {metric_name}: {metric_value:.2f}'
